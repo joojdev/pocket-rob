@@ -10,7 +10,7 @@ html, body {
 }
 
 body {
-  background-image: url('./background.png');
+  background-image: url('./sprites/background.png');
   background-position: center center;
   background-attachment: fixed;
   background-size: contain;
@@ -38,6 +38,8 @@ body {
 #gameScreen {
   width: 480px;
   height: 480px;
+  /* image-rendering: crisp-edges; */
+  image-rendering: pixelated;
 }
 
 #codeEditor, #gameScreen {

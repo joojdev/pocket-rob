@@ -84,11 +84,11 @@ const gameScreen = canvasElement.getContext('2d')
 
 let spritesLoaded = 0
 
-let spriteList = ['./background.png', './rob-sprite.png', './sombra.png']
+let spriteList = ['background.png', 'rob-sprite.png', 'sombra.png']
 
-spriteList = spriteList.map((path) => {
+spriteList = spriteList.map((file) => {
   const image = new Image()
-  image.src = path
+  image.src = `./sprites/${file}`
 
   image.onload = () => {
     spritesLoaded += 1
