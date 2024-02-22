@@ -80,6 +80,7 @@ nav > ul {
 nav > ul > li {
   cursor: pointer;
   transition: .1s;
+  user-select: none;
 }
 
 nav > ul > li:hover {
