@@ -3,8 +3,10 @@ const playButton = document.querySelector('#playButton')
 playButton.addEventListener('click', async () => {
   if (playing) return
   playing = true
+  playButton.textContent = '⌛'
   const code = javascript.javascriptGenerator.workspaceToCode(workspace)
   await eval(code)
+  playButton.textContent = '▶'
   playing = false
 })
 
@@ -35,11 +37,16 @@ let y = 2
 let facing = 'front'
 let playing = false
 
-function drawRob(x, y, facing, surprised) {
-  if (x > 6 || y > 6 || x < 0 || y < 0) return
-
-  const posX = (x * 16) + x + 1
-  const posY = (y * 16) + y + 1
+function drawRob(drawX, drawY, facing, snapToGrid = true, surprised = false) {
+  if ((drawX > 6 || drawY > 6 || drawX < 0 || drawY < 0) && snapToGrid) return
+  
+  let posX = drawX
+  let posY = drawY
+  
+  if (snapToGrid) {
+    posX = (drawX * 16) + drawX + 1
+    posY = (drawY * 16) + drawY + 1
+  }
   let spriteX = 0
   let spriteY = 0
 
@@ -60,12 +67,16 @@ function drawRob(x, y, facing, surprised) {
   gameScreen.drawImage(spriteList[2], posX, posY)
   gameScreen.drawImage(spriteList[1], spriteX, spriteY, 16, 16, posX, posY, 16, 16)
   if (!surprised) return
-  gameScreen.drawImage(spriteList[3], posX, posY - 13)
+  gameScreen.drawImage(spriteList[3], posX, posY - 3)
 }
 
-function draw() {
+function clear() {
   gameScreen.drawImage(spriteList[0], 0, 0)
-  drawRob(x, y, facing, true)
+}
+
+function draw(snapToGrid = true, surprised = false) {
+  clear()
+  drawRob(x, y, facing, snapToGrid, surprised)
 }
 
 const delay = async (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -126,10 +137,55 @@ async function walk(blocks) {
       break
   }
 
-  for (let i = 0; i < blocks; i++) {
-    x += xOffset
-    y += yOffset
+  const xForecast = x + (xOffset * blocks)
+  const yForecast = y + (yOffset * blocks)
+  let surprised = false
+  
+  if (xForecast > 6) {
+    blocks -= xForecast - 6
+    surprised = true
+  } else if (yForecast > 6) {
+    blocks -= yForecast - 6
+    surprised = true
+  } else if (xForecast < 0) {
+    blocks += xForecast
+    surprised = true
+  } else if (yForecast < 0) {
+    blocks += yForecast
+    surprised = true
+  }
 
+  for (let i = 0; i < blocks; i++) {
+    let oldX = x
+    let oldY = y
+
+    x = (x * 16) + x + 1
+    y = (y * 16) + y + 1
+
+    for (let j = 0; j < 16; j ++) {
+      x += xOffset
+      y += yOffset
+      draw(false)
+      await delay(50)
+    }
+
+    x = oldX + xOffset
+    y = oldY + yOffset
+    draw()
+    await delay(500)
+  }
+
+  if (surprised) {
+    draw(true, true)
+    await delay(500)
+    draw()
+    await delay(500)
+    draw(true, true)
+    await delay(500)
+    draw()
+    await delay(500)
+    draw(true, true)
+    await delay(500)
     draw()
     await delay(500)
   }
