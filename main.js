@@ -5,6 +5,7 @@ playButton.addEventListener('click', async () => {
   playing = true
   playButton.textContent = '⌛'
   const code = javascript.javascriptGenerator.workspaceToCode(workspace)
+  // console.log(code)
   await eval(code)
   playButton.textContent = '▶'
   playing = false
