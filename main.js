@@ -5,7 +5,6 @@ playButton.addEventListener('click', async () => {
   playing = true
   playButton.textContent = '⌛'
   const code = javascript.javascriptGenerator.workspaceToCode(workspace)
-  // console.log(code)
   await eval(code)
   playButton.textContent = '▶'
   playing = false
@@ -17,6 +16,7 @@ const gameScreen = canvasElement.getContext('2d')
 let spritesLoaded = 0
 
 let spriteList = ['background', 'rob-sprite', 'sombra', 'aviso']
+let audioList = ['andar', 'aviso', 'fala']
 
 spriteList = spriteList.map((file) => {
   const image = new Image()
@@ -33,10 +33,31 @@ spriteList = spriteList.map((file) => {
   return image
 })
 
+audioList = audioList.map((file) => {
+  const audio = new Audio(`./audios/${file}.mp3`)
+
+  return audio
+})
+
 let x = 1
 let y = 2
 let facing = 'front'
 let playing = false
+
+canvasElement.addEventListener('click', (event) => {
+  const rectangle = canvasElement.getBoundingClientRect()
+  const clickX = event.offsetX
+  const clickY = event.offsetY
+
+  const minX = ((x * 16) + x + 1) * 4
+  const maxX = ((x * 16) + x + 17) * 4
+  const minY = ((y * 16) + y + 1) * 4
+  const maxY = ((y * 16) + y + 17) * 4
+
+  if (clickX >= minX && clickX <= maxX && clickY >= minY && clickY <= maxY) {
+    audioList[2].play()
+  }
+})
 
 function drawRob(drawX, drawY, facing, snapToGrid = true, surprised = false) {
   if ((drawX > 6 || drawY > 6 || drawX < 0 || drawY < 0) && snapToGrid) return
@@ -163,6 +184,7 @@ async function walk(blocks) {
     x = (x * 16) + x + 1
     y = (y * 16) + y + 1
 
+    audioList[0].play()
     for (let j = 0; j < 16; j ++) {
       x += xOffset
       y += yOffset
@@ -177,6 +199,7 @@ async function walk(blocks) {
   }
 
   if (surprised) {
+    audioList[1].play()
     draw(true, true)
     await delay(500)
     draw()
