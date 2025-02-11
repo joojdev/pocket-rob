@@ -16,7 +16,6 @@ const gameScreen = canvasElement.getContext('2d')
 let spritesLoaded = 0
 
 let spriteList = ['background', 'rob-sprite', 'sombra', 'aviso']
-let audioList = ['andar', 'aviso', 'fala']
 
 spriteList = spriteList.map((file) => {
   const image = new Image()
@@ -31,12 +30,6 @@ spriteList = spriteList.map((file) => {
   }
 
   return image
-})
-
-audioList = audioList.map((file) => {
-  const audio = new Audio(`./audios/${file}.mp3`)
-
-  return audio
 })
 
 let x = 1
@@ -55,7 +48,7 @@ canvasElement.addEventListener('click', (event) => {
   const maxY = ((y * 16) + y + 17) * 4
 
   if (clickX >= minX && clickX <= maxX && clickY >= minY && clickY <= maxY) {
-    audioList[2].play()
+    console.log('hello, world!')
   }
 })
 
@@ -184,7 +177,6 @@ async function walk(blocks) {
     x = (x * 16) + x + 1
     y = (y * 16) + y + 1
 
-    audioList[0].play()
     for (let j = 0; j < 16; j ++) {
       x += xOffset
       y += yOffset
@@ -199,7 +191,6 @@ async function walk(blocks) {
   }
 
   if (surprised) {
-    audioList[1].play()
     draw(true, true)
     await delay(500)
     draw()
