@@ -103,6 +103,10 @@ a {
   #codeEditor {
     width: 90%;
   }
+  
+  h1 {
+    font-size: 1.9em;
+  }
 
   body {
     display: flex;
