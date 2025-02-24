@@ -1,17 +1,23 @@
 const toolbox = {
-  'kind': 'flyoutToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      kind: 'block',
-      type: 'walk_block'
-    },
-    {
-      kind: 'block',
-      type: 'turn_block'
-    },
-    {
-      kind: 'block',
-      type: 'repeat'
+      kind: 'category',
+      name: 'Blocos',
+      contents: [
+        {
+          kind: 'block',
+          type: 'walk_block'
+        },
+        {
+          kind: 'block',
+          type: 'turn_block'
+        },
+        {
+          kind: 'block',
+          type: 'repeat'
+        }
+      ]
     }
   ]
 }

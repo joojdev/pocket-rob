@@ -30,21 +30,16 @@ body {
   margin-top: 30px;
 }
 
-#codeEditor {
-  height: 480px;
-  width: 560px;
-}
-
 #gameScreen {
-  width: 480px;
-  height: 480px;
   /* image-rendering: crisp-edges; */
   image-rendering: pixelated;
 }
 
 #codeEditor, #gameScreen {
+  height: 480px;
   border-radius: 10px;
   box-shadow: 0 5px 3px rgba(0, 0, 0, 0.3);
+  aspect-ratio: 1/1;
 }
 
 nav {
@@ -90,4 +85,31 @@ nav > ul > li:hover {
 
 a {
   color: white;
+}
+
+@media only screen and (max-width: 600px) {
+  .background {
+    flex-direction: column;
+    gap: 0;
+    position: initial;
+    height: 100%;
+    margin-top: 0;
+  }
+
+  #gameScreen, #codeEditor {
+    height: 50%;
+  }
+
+  #codeEditor {
+    width: 90%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav {
+    position: initial;
+  }
 }
